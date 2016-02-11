@@ -55,7 +55,17 @@ class Board
     end
   end
 
+  def reveal_neighbors(tile)
+    find_neighbors(tile).each do |t|
+      reveal_neighbors(t) if !t.bombed?
+    end
+  end
+  
+
+
 
 end
 
-Board.new
+if __FILE__ == $PROGRAM_NAME
+  a = Board.new()
+end
