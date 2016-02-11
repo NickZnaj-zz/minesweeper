@@ -2,7 +2,7 @@ require_relative 'tiles'
 require 'byebug'
 
 class Board
-  attr_accessor :grid, :size,:mines
+  attr_accessor :grid, :size, :mines
   def initialize(size = 9, mines = 20)
     @size = size
     @mines = mines

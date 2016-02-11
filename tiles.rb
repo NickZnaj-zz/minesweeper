@@ -1,8 +1,9 @@
 class Tile
-  attr_accessor :bomb, :bomb_count, :row, :col, :reveal
+  attr_accessor :bomb, :bomb_count, :row, :col, :reveal, :flag
 
   def initialize(row, col, bomb = false)
      @bomb = bomb
+     @flag = false
      @reveal = false
      @row, @col = row, col
      @bomb_count = 0 if bomb == false
@@ -21,7 +22,7 @@ class Tile
   end
 
   def flagged?
-
+    flag
   end
 
 end
