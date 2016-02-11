@@ -3,7 +3,7 @@ require 'byebug'
 
 class Board
   attr_accessor :grid, :size, :mines
-  def initialize(size = 9, mines = 20)
+  def initialize(size, mines)
     @size = size
     @mines = mines
     @grid = Array.new(size) do |row|
@@ -41,11 +41,15 @@ class Board
   end
 
   def find_neighbors(tile)
-    neighbor_tiles = grid.flatten.select {|pn| tile.row >= pn.row - 1 &&
+    #debugger
+    #pn = potential neighbor :)
+    neighbor_tiles = grid.flatten.select {|pn|
+    tile.row >= pn.row - 1 &&
     tile.row <= pn.row + 1 &&
     tile.col >= pn.col - 1 &&
     tile.col <= pn.col + 1 &&
     tile.object_id != pn.object_id}
+
   end
 
   def add_bomb_count
@@ -61,8 +65,12 @@ class Board
 
   def reveal_neighbors(tile)
     find_neighbors(tile).each do |t|
-      t.reveal = true
-      reveal_neighbors(t) if !t.bombed? && !t.flagged?
+      if t.bombed? || t.flagged? || t.revealed?
+        next
+      else
+      tile.reveal = true
+      reveal_neighbors(t)
+    end
     end
   end
 
@@ -70,14 +78,14 @@ class Board
     @grid.each_with_index do |row, row_idx|
       disp_str = ""
       row.each do |col|
-        if !col.revealed?
-          disp_str << "|*|"
+        if col.flagged?
+          disp_str << "|F|"
         elsif col.revealed? && col.bomb_count == 0
           disp_str << "|_|"
         elsif col.revealed?
           disp_str << "|#{col.bomb_count}|"
-        elsif col.flagged?
-          disp_str << "|F|"
+        elsif !col.revealed?
+          disp_str << "|*|"
         end
       end
       puts disp_str
@@ -86,9 +94,4 @@ class Board
   end
 
 
-end
-
-if __FILE__ == $PROGRAM_NAME
-  a = Board.new()
-  a.display
 end
