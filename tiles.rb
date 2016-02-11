@@ -3,7 +3,7 @@ class Tile
 
   def initialize(bomb = false)
      @bomb = bomb
-     @bomb_count = 0 if bomb = false
+     @bomb_count = 0 if bomb == false
   end
 
   def neighbor_bomb_count
