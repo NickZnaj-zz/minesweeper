@@ -44,6 +44,17 @@ class Board
     tile.object_id != pn.object_id}
   end
 
+  def add_bomb_count
+    self.each do |row|
+      row.each do |col|
+        this_tile = self[[row, col]]
+        if this_tile.bombed?
+          find_neighbors(this_tile).each {|tile| tile.neighbor_bomb_count}
+        end
+      end
+    end
+  end
+
 
 end
 
