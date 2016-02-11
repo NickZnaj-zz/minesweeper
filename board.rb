@@ -8,7 +8,7 @@ class Board
     @mines = mines
     @grid = Array.new(size) do |row|
       Array.new(size) do |col|
-        Tile.new
+        Tile.new(row, col)
       end
     end
     assign_mines
@@ -24,7 +24,6 @@ class Board
     @grid[x][y] = val
   end
 
-
   def assign_mines
     count_mines = 0
     #debugger
@@ -35,6 +34,10 @@ class Board
         count_mines += 1
       end
     end
+  end
+
+  def find_neighbor
+    
   end
 
 
