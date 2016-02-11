@@ -18,7 +18,4 @@ class Tile
     bomb_count
   end
 
-
-
-
 end
