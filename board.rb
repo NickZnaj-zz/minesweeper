@@ -36,8 +36,12 @@ class Board
     end
   end
 
-  def find_neighbor
-    
+  def find_neighbors(tile)
+    neighbor_tiles = grid.flatten.select {|pn| tile.row >= pn.row - 1 &&
+    tile.row <= pn.row + 1 &&
+    tile.col >= pn.col - 1 &&
+    tile.col <= pn.col + 1 &&
+    tile.object_id != pn.object_id}
   end
 
 
