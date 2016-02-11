@@ -12,10 +12,14 @@ class Board
       end
     end
     assign_mines
+    add_bomb_count
   end
 
   def [](pos)
     x, y = pos
+    if x.is_a?(Array) || y.is_a?(Array)
+      debugger
+    end
     @grid[x][y]
   end
 
@@ -45,9 +49,9 @@ class Board
   end
 
   def add_bomb_count
-    self.each do |row|
-      row.each do |col|
-        this_tile = self[[row, col]]
+    @grid.each_with_index do |row, row_idx|
+      row.each_index do |col|
+        this_tile = self[[row_idx, col]]
         if this_tile.bombed?
           find_neighbors(this_tile).each {|tile| tile.neighbor_bomb_count}
         end
@@ -57,15 +61,34 @@ class Board
 
   def reveal_neighbors(tile)
     find_neighbors(tile).each do |t|
-      reveal_neighbors(t) if !t.bombed?
+      t.reveal = true
+      reveal_neighbors(t) if !t.bombed? && !t.flagged?
     end
   end
-  
 
+  def display
+    @grid.each_with_index do |row, row_idx|
+      disp_str = ""
+      row.each do |col|
+        if !col.revealed?
+          disp_str << "|*|"
+        elsif col.revealed? && col.bomb_count == 0
+          disp_str << "|_|"
+        elsif col.revealed?
+          disp_str << "|#{col.bomb_count}|"
+        elsif col.flagged?
+          disp_str << "|F|"
+        end
+      end
+      puts disp_str
+    end
+
+  end
 
 
 end
 
 if __FILE__ == $PROGRAM_NAME
   a = Board.new()
+  a.display
 end
